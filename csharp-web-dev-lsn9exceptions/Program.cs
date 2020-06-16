@@ -9,6 +9,7 @@ namespace csharp_web_dev_lsn9exceptions
     {
         static double Divide(double x, double y)
         {
+            if (y == 0) { throw new ArgumentOutOfRangeException("Cannot divide by 0!"); }
             return x / y;
         }
 
@@ -16,7 +17,7 @@ namespace csharp_web_dev_lsn9exceptions
         {
             int points = 0;
             if (fileName.IndexOf(".cs") != -1) { points += 1; }
-            if (fileName.IndexOf(".cs") == -1) { Console.Write("No .cs file extension!  "); }
+            if (fileName=="") { throw new NullReferenceException("No string value provided"); }
             return points;
         }
 
@@ -26,12 +27,16 @@ namespace csharp_web_dev_lsn9exceptions
             // Test out your Divide() function here!
 
             Console.WriteLine("...Attempting to divide 3 by 0..\n");
-            var p = Divide(3, 0);
-            Console.Write("Result:  ");
-            if (double.IsInfinity(p))
+            
+            try
             {
-                Console.WriteLine("Cannot divide by 0!");
+                var p = Divide(3, 0);
             }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
 
             
             // Test out your CheckFileExtension() function here!
@@ -44,7 +49,14 @@ namespace csharp_web_dev_lsn9exceptions
 
             foreach (var item in students)
             {
-                Console.WriteLine(CheckFileExtension(item.Value));
+                try
+                {
+                    Console.WriteLine(CheckFileExtension(item.Value));
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
     }
